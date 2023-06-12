@@ -4,15 +4,14 @@ import {getFirestore} from "firebase/firestore"
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAa-K8lGRVHTaNTT9wixqtJr8rwve4OHF0",
-  authDomain: "vot-tasker.firebaseapp.com",
-  projectId: "vot-tasker",
-  storageBucket: "vot-tasker.appspot.com",
-  messagingSenderId: "921221906584",
-  appId: "1:921221906584:web:242ebf6a2af645e0b8d0ed",
-  measurementId: "G-RWJS34Z0PD"
+  apiKey: "AIzaSyAYogr6EGje_ih8Fi9NyRXh0w-weFFnFNA",
+  authDomain: "tasker-1-6bb98.firebaseapp.com",
+  projectId: "tasker-1-6bb98",
+  storageBucket: "tasker-1-6bb98.appspot.com",
+  messagingSenderId: "577362752796",
+  appId: "1:577362752796:web:97ec497dd59f8dc024f6d9",
+  measurementId: "G-480Y9CJ6BY"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 

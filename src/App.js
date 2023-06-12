@@ -7,7 +7,7 @@ import {useEffect,useState} from "react"
 import Tasks from "./components/Tasks";
 
 function App() {
-  const usercollection = collection(db, "users")
+  
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
  
@@ -16,7 +16,7 @@ function App() {
       if (user) {
         setUser(user);
         const currentUserId = auth.currentUser.uid;
-        const documentRef = doc(usercollection, currentUserId);
+        const documentRef = doc(collection(db, "users"), currentUserId);
 
         const documentSnapshot = await getDoc(documentRef)
         setTasks(documentSnapshot.data().tasks)
