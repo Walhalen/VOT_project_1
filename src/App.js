@@ -83,10 +83,11 @@ function App() {
     setTasks([...tasks, task])
   }
 
-  const onDelete = (task) => {
+  const onDelete = (task1) => {
+    const updatedTasks = tasks.filter(task => task !== task1);
     const docRef = doc(usercolection, auth.currentUser.uid);
-    updateDoc(docRef, {tasks: [...tasks, task]})
-    setTasks([...tasks, task])
+    updateDoc(docRef, { tasks: updatedTasks });
+    setTasks(updatedTasks);
   }
 
   return (
@@ -108,7 +109,7 @@ function App() {
           }}>Log out</button>
           <Header title = "Your Tasks" onClick={()=>setShowAdd(!showAdd)}/>
           {showAdd && <AddTask onAdd = {onAdd}/>}
-          {tasks.length === 0 ? <h3 >No tasks</h3> : <Tasks tasks = {tasks}/>}
+          {tasks.length === 0 ? <h3 >No tasks</h3> : <Tasks tasks = {tasks} onDelete = {onDelete}/>}
         </> :  <Auth login = {login} signedIn = {signedIn} signedInWithGoogle = {signedInWithGoogle}/>}
 
 
