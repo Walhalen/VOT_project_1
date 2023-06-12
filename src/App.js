@@ -9,13 +9,16 @@ import Tasks from "./components/Tasks";
 function App() {
 
   const [user, setUser] = useState(null);
-
+  const [tasks, setTasks] = useState([]);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
+        const currentUserId = auth.currentUser.uid;
+        
       } else {
         setUser(null);
+        setTasks([])
       }
     });
   })

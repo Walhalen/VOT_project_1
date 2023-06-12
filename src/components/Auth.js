@@ -1,18 +1,19 @@
 import {auth, db, googleProvider} from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithPopup, signOut, signInWithEmailAndPassword} from "firebase/auth";
-import { getDoc, collection, addDoc } from "firebase/firestore";
+import { getDoc, collection, addDoc, setDoc, doc } from "firebase/firestore";
 import {useState} from "react"
 
 export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
-    console.log(auth?.currentUser?.email);
+    
     
     const usercolection = collection(db, "users");
     const addUser = async (email) => {
         try{
-            await addDoc(usercolection, {
+            const docRef = doc(usercolection, auth.currentUser.uid);
+            await setDoc(docRef,{
                 email: email,
                 tasks: []
             })
@@ -54,7 +55,7 @@ export const Auth = () => {
             console.error(err)
         }
     }
-    
+
     const logout = async() => {
         try{
             await signOut(auth)
@@ -66,8 +67,14 @@ export const Auth = () => {
     }
     return (
         <div>
-            <input placeholder="Email..." onChange = {(e) => setEmail(e.target.value)}/> 
-            <input placeholder="Password..." type = "password" onChange = {(e) => setPassword(e.target.value)}/>
+            <input placeholder="Email..." onChange = {(e) => {
+                setEmail(e.target.value)
+                console.log(auth?.currentUser?.email);
+            }}/> 
+            <input placeholder="Password..." type = "password" onChange = {(e) => {
+                setPassword(e.target.value)
+                console.log(auth?.currentUser?.email);
+            }}/>
             <button onClick = {signedIn}>Signed in</button>
 
             <button onClick = {signedInWithGoogle}>Signed with Google</button>
