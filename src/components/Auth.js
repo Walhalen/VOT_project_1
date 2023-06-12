@@ -1,5 +1,5 @@
 import {auth, db, googleProvider} from "../config/firebase";
-import { createUserWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup, signOut, signInWithEmailAndPassword} from "firebase/auth";
 import { getDoc, collection, addDoc } from "firebase/firestore";
 import {useState} from "react"
 
@@ -24,6 +24,7 @@ export const Auth = () => {
     const signedIn = async() => {
         try{
             await createUserWithEmailAndPassword(auth, email, password)
+
             addUser(email)
         }catch(err)
         {
@@ -45,6 +46,15 @@ export const Auth = () => {
 
     }
 
+    const login = async (email, password) =>{
+        try{
+            await signInWithEmailAndPassword(auth, email, password)
+        }catch(err)
+        {
+            console.error(err)
+        }
+    }
+    
     const logout = async() => {
         try{
             await signOut(auth)
@@ -61,7 +71,7 @@ export const Auth = () => {
             <button onClick = {signedIn}>Signed in</button>
 
             <button onClick = {signedInWithGoogle}>Signed with Google</button>
-
+            <button onClick = {()=>{login(email,password)}}>Log in</button>
             <button onClick = {logout}>Log out</button>
         </div>
     )
