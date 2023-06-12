@@ -1,16 +1,30 @@
-import {auth, googleProvider} from "../config/firebase";
+import {auth, db, googleProvider} from "../config/firebase";
 import { createUserWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth";
+import { getDoc, collection, addDoc } from "firebase/firestore";
 import {useState} from "react"
 
 export const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    
     console.log(auth?.currentUser?.email);
-
+    
+    const usercolection = collection(db, "users");
+    const addUser = async (email) => {
+        try{
+            await addDoc(usercolection, {
+                email: email,
+                tasks: []
+            })
+        }catch(err)
+        {
+            console.error(err)
+        }
+    }
     const signedIn = async() => {
         try{
             await createUserWithEmailAndPassword(auth, email, password)
+            addUser(email)
         }catch(err)
         {
             console.error(err)
@@ -20,7 +34,10 @@ export const Auth = () => {
 
     const signedInWithGoogle = async() => {
         try{
-            await signInWithPopup(auth, googleProvider)
+            await signInWithPopup(auth, googleProvider).then((userCredential)=>{
+                addUser(userCredential.user.email)
+            })
+            
         }catch(err)
         {
             console.error(err)
