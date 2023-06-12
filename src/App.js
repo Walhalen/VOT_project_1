@@ -2,32 +2,19 @@ import Auth from "./components/Auth";
 import Header from "./components/Header";
 import {auth, db, googleProvider} from "./config/firebase";
 import { createUserWithEmailAndPassword, signInWithPopup, signOut, signInWithEmailAndPassword} from "firebase/auth";
-import { getDoc, collection, addDoc, doc, setDoc} from "firebase/firestore";
+import { getDoc, collection, addDoc, doc, setDoc, updateDoc, deleteDoc} from "firebase/firestore";
 import {useEffect,useState} from "react"
 import Tasks from "./components/Tasks";
+import AddTask from "./components/AddTask";
+import React from "react";
 
 function App() {
   
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [showAdd, setShowAdd] = useState(false);
  
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async(user) => {
-  //     if (user) {
-  //       setUser(user);
-  //       const currentUserId = auth.currentUser.uid;
-  //       const documentRef = doc(collection(db, "users"), currentUserId);
-
-  //       const documentSnapshot = await getDoc(documentRef)
-  //       setTasks(documentSnapshot.data().tasks)
-  //       // console.log(tasks)
-  //     } else {
-  //       setUser(null);
-  //       setTasks([])
-  //     }
-  //   }, []);
-  // })
- 
+  
     
     
     const initTasksAndUser = async() => {
@@ -90,8 +77,16 @@ function App() {
             console.error(err)
         }
     }
-  const onAdd = () => {
-    console.log("clicked");
+  const onAdd = (task) => {
+    const docRef = doc(usercolection, auth.currentUser.uid);
+    updateDoc(docRef, {tasks: [...tasks, task]})
+    setTasks([...tasks, task])
+  }
+
+  const onDelete = (task) => {
+    const docRef = doc(usercolection, auth.currentUser.uid);
+    updateDoc(docRef, {tasks: [...tasks, task]})
+    setTasks([...tasks, task])
   }
 
   return (
@@ -107,12 +102,12 @@ function App() {
                 setUser(null);
             }catch(err)
             {
-                console.error(err)
+              console.error(err)
             }
     
           }}>Log out</button>
-          <Header title = "Your Tasks" onClick={onAdd}/>
-          
+          <Header title = "Your Tasks" onClick={()=>setShowAdd(!showAdd)}/>
+          {showAdd && <AddTask onAdd = {onAdd}/>}
           {tasks.length === 0 ? <h3 >No tasks</h3> : <Tasks tasks = {tasks}/>}
         </> :  <Auth login = {login} signedIn = {signedIn} signedInWithGoogle = {signedInWithGoogle}/>}
 
