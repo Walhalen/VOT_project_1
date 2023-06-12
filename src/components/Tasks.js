@@ -1,10 +1,19 @@
 import React from 'react'
+import Task from './Task'
 
-const Tasks = () => {
+const Tasks = ({tasks}) => {
   return (
-    <div>
-      <h1>No tasks</h1>
-    </div>
+    <>
+        {
+          tasks.map((task) =>{
+              // {console.log(task.name)}
+              return(
+                <Task task = {task} />
+              )
+            }
+          )
+        }
+    </>
   )
 }
 
