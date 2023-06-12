@@ -1,3 +1,4 @@
+import Auth from "./components/Auth";
 import Header from "./components/Header";
 
 function App() {
@@ -10,7 +11,9 @@ function App() {
 
   return (
     <div className = "container">
-        <Header title = "Your tasks" onClick = {onAdd}/>
+        {/* <Header title = "Your tasks" onClick = {onAdd}/> */}
+
+        <Auth />
     </div>
   );
 }
